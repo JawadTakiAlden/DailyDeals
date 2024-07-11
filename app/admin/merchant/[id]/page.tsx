@@ -110,13 +110,18 @@ const MerchantDetail = ({
                 flexWrap: "wrap",
               }}
             >
-              {stores.map((store) => {
+              {stores.map((store, i) => {
                 return (
-                  <Tooltip PopperProps={{
-                    sx : {
-                      backgroundColor : 'transparent'
-                    }
-                  }} followCursor title={'click to see branches'}>
+                  <Tooltip
+                    key={store.id}
+                    PopperProps={{
+                      sx: {
+                        backgroundColor: "transparent",
+                      },
+                    }}
+                    followCursor
+                    title={"click to see branches"}
+                  >
                     <Box
                       onClick={() => {
                         router.push(
@@ -146,7 +151,6 @@ const MerchantDetail = ({
                         },
                         cursor: "pointer",
                       }}
-                      key={store.id}
                     >
                       <Typography
                         sx={{
@@ -189,7 +193,7 @@ const MerchantDetail = ({
             <SectionTitle sx={{ mb: 2 }}>Store Detail</SectionTitle>
             {!selectedStoreID ? (
               <Typography color={"warning.main"}>
-                Click on store to see it's information
+                Click on store to see its information
               </Typography>
             ) : (
               <Box>see information of store {selectedStoreID}</Box>

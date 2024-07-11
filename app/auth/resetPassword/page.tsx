@@ -64,7 +64,7 @@ const ResetForgotenPassword = ({ searchParams: { task, email } }: Props) => {
         {!task ? (
           <>
             <Typography variant="h5" mb={2}>
-              <LockResetOutlined /> Forgot Your Password? Let's Get You Back In!
+              <LockResetOutlined /> Forgot Your Password? Lets Get You Back In!
             </Typography>
             <Typography
               sx={{
@@ -72,8 +72,8 @@ const ResetForgotenPassword = ({ searchParams: { task, email } }: Props) => {
                 mb: 2,
               }}
             >
-              Forgot your password? Don’t worry; it happens to the best of us.
-              Just provide your registered email address or username, and we'll
+              Forgot your password? Dont worry it happens to the best of us.
+              Just provide your registered email address or username, and we will
               send you a code to reset your password. This quick and easy
               process ensures that you can regain access to your account without
               any hassle. Your security is our top priority, so rest assured
@@ -136,7 +136,7 @@ const ResetForgotenPassword = ({ searchParams: { task, email } }: Props) => {
               Verify
             </Button>
             <Typography variant="body2">
-              Didn't receive a code? Check your spam or junk folder.
+              Didnt receive a code? Check your spam or junk folder.
             </Typography>
             <Button sx={{ mt: 1 }} variant="outlined">
               or request a new one
@@ -146,7 +146,7 @@ const ResetForgotenPassword = ({ searchParams: { task, email } }: Props) => {
           <Box>
             <Typography variant="h5" mb={2}>
               <LockOpenOutlined />
-              {" "}Congratulations! You're Almost There.
+              {" "}Congratulations! You are Almost There.
             </Typography>
             <Typography
               sx={{
@@ -157,7 +157,7 @@ const ResetForgotenPassword = ({ searchParams: { task, email } }: Props) => {
                 },
               }}
             >
-              You're just a few steps away from accessing your account. Please
+              You are just a few steps away from accessing your account. Please
               set a new password below to complete the process.
             </Typography>
             <FormControl fullWidth margin="normal">
@@ -170,7 +170,7 @@ const ResetForgotenPassword = ({ searchParams: { task, email } }: Props) => {
             </FormControl>
 
             <Typography variant="body2" color={'grey'}>
-              Choose a strong password that's unique to this account. Include a
+              Choose a strong password thats unique to this account. Include a
               mix of uppercase letters, lowercase letters, numbers, and symbols
               for added security.
             </Typography>

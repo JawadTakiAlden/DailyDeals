@@ -7,7 +7,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const PaletteController = () => {
-    const customization = useSelector((state : RootState) => state.customization)
+  const customization = useSelector((state: RootState) => state.customization);
   const dispacth = useDispatch();
   return (
     <Box
@@ -20,17 +20,18 @@ const PaletteController = () => {
     >
       {avaliblePalettes.map((palette, i) => (
         <Box
+          key={i}
           sx={{
             cursor: "pointer",
             width: "75px",
             height: "75px",
             borderRadius: "50%",
-            transition : '0.3s',
-            opacity : customization.activePaletteIndex === i ? 1 : 0.5,
+            transition: "0.3s",
+            opacity: customization.activePaletteIndex === i ? 1 : 0.5,
             backgroundImage: `linear-gradient(to bottom , ${palette.primary} 20%  , ${palette.secondary} 20%  , ${palette.secondary} 40%  , ${palette.error} 40% , ${palette.error} 60% , ${palette.success} 60% , ${palette.success} 80% , ${palette.background} 80% , ${palette.background} 100% )`,
           }}
           onClick={() => {
-            localStorage.setItem('dailyDealsTheme' , JSON.stringify(i))
+            localStorage.setItem("dailyDealsTheme", JSON.stringify(i));
             dispacth(
               CHANGE_Palette({
                 palette,

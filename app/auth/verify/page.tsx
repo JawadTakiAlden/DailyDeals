@@ -74,7 +74,7 @@ const VerifyAccountPage = ({ searchParams: { email } }: Props) => {
           Verifiy Now
         </LoadingButton>
         <Typography variant="body2">
-          Didn't receive a code? Check your spam or junk folder.
+          Did not receive a code? Check your spam or junk folder.
         </Typography>
         <Button sx={{ mt: 1 }} variant="outlined">
           or request a new one
