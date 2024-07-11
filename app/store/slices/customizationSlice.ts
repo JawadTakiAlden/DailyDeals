@@ -1,12 +1,12 @@
 import { avaliblePalettes } from "@/app/contsant";
 import CustiomizationState from "@/app/interfaces/CustiomizationStateState";
 import customizationObject from "@/app/types/CustomizationObject";
-import { getLocalStorageItem, setLocalStorageItem } from "@/app/utils/localstorage";
+// import { getLocalStorageItem, setLocalStorageItem } from "@/app/utils/localstorage";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 
-const activePaletteIndex : number =  getLocalStorageItem<number>('dailyDealsTheme')! || 2
-const mode : 'light' | 'dark' = getLocalStorageItem<'light'|'dark'>('dailyDealsMode') || 'dark'
+const activePaletteIndex : number =  2
+const mode : 'light' | 'dark' = 'dark'
 
 const initialState : CustiomizationState = {
     mode : mode,
@@ -28,7 +28,7 @@ const customization = createSlice({
         CHANGE_MODE : (state) => {
             const newMode = state.mode === 'light' ? 'dark' : 'light'
             state.mode = newMode
-            setLocalStorageItem<'light'|'dark'>('dailyDealsMode' , newMode)
+            // setLocalStorageItem<'light'|'dark'>('dailyDealsMode' , newMode)
         }
     }
 })
