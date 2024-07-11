@@ -13,7 +13,7 @@ const LoginForm = ({ email }: Props) => {
     <form>
       <FormControl color="primary" fullWidth sx={{ mb: 1 }}>
         <InputLabel>Email</InputLabel>
-        <OutlinedInput label="Email" type="text" value={email} autoFocus />
+        <OutlinedInput label="Email" type="email" value={email} autoFocus />
       </FormControl>
       <FormControl color="primary" fullWidth sx={{ mb: 1 }}>
         <InputLabel>Password</InputLabel>

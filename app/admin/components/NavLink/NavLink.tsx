@@ -1,5 +1,6 @@
 import NavMenu from "@/app/components/NavMenu/NavMenu";
-import { Box, Button, MenuItem } from "@mui/material";
+import { ChatOutlined } from "@mui/icons-material";
+import { Box, Button, IconButton, MenuItem } from "@mui/material";
 import Link from "next/link";
 import React from "react";
 
@@ -82,6 +83,18 @@ const NavLink = () => {
           );
         }}
       />
+      <IconButton
+        // sx={{
+        //   backgroundColor: "primary.main",
+        //   "&:hover": {
+        //     backgroundColor: "primary.dark",
+        //   },
+        // }}
+        component={Link}
+        href="/chat/2"
+      >
+        <ChatOutlined />
+      </IconButton>
     </>
   );
 };
