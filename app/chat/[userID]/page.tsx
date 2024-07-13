@@ -1,18 +1,32 @@
 "use client";
+import { ChatCard } from "@/app/interfaces/ChatCard";
+import { SET_SELECTED_CONVERSATION } from "@/app/store/slices/chatSlice";
+import { AppDispatch, RootState } from "@/app/store/store";
 import NoSelectedConversation from "@/public/svgAssets";
+import {
+  ChatBubble,
+  ChatBubbleOutline,
+  ChatBubbleOutlined,
+  ExitToAppOutlined,
+} from "@mui/icons-material";
 import {
   alpha,
   Avatar,
   Box,
+  BoxProps,
   Divider,
   FormControl,
+  getContrastRatio,
+  IconButton,
   InputLabel,
   OutlinedInput,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
-import Image from "next/image";
-import React from "react";
+import React, { Dispatch, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 interface Props {
   params: {
@@ -20,283 +34,362 @@ interface Props {
   };
 }
 
-interface Message {
-  id: number;
+const ConversationHeader = () => {
+  return (
+    <Typography
+      sx={{
+        fontSize: "32px",
+        fontWeight: "800",
+        mb: 3,
+        display: "flex",
+        alignItems: "center",
+        gap: "4px",
+      }}
+    >
+      <ChatBubbleOutline sx={{ fontSize: "32px" }} />
+      Chats
+    </Typography>
+  );
+};
 
-  sender: number;
+const Conversations = ({ conversations }: { conversations: ChatCard[] }) => {
+  return (
+    <Box
+      sx={{
+        width: {xs : "100%" , sm : "320px"},
+        p: 2,
+        boxShadow: (theme) =>
+          `inset 2px 2px 15px 0px ${alpha(theme.palette.primary.dark, 0.3)}`,
+        backdropFilter: "blur(10px)",
+        height: {xs : "100%" , sm :"calc(100vh - 30px)"},
+        my: "auto",
+        ml: {xs : 0 , sm : 1},
+        borderRadius: "10px",
+        display: "flex",
+        flexDirection: "column",
+        overflowY: "auto",
+        "&::-webkit-scrollbar": {
+          display: "none",
+        },
+        scrollbarWidth: "none",
+      }}
+    >
+      <ConversationHeader />
+      <FormControl>
+        <InputLabel>Search</InputLabel>
+        <OutlinedInput
+          label="Search"
+          type="search"
+          sx={{
+            borderRadius: "30px",
+            height: "50px",
+          }}
+        />
+      </FormControl>
+      <Divider
+        sx={{
+          my: 2,
+        }}
+      />
+      <Box>
+        {conversations.map((conversation) => (
+          <ConversationCard key={conversation.id} conversation={conversation} />
+        ))}
+      </Box>
+    </Box>
+  );
+};
 
-  text: string;
+const ConversationCard = ({ conversation }: { conversation: ChatCard }) => {
+  const dispatch = useDispatch();
+  return (
+    <Box
+      onClick={() => {
+        dispatch(
+          SET_SELECTED_CONVERSATION({
+            conversation,
+            id: conversation.id,
+          })
+        );
+      }}
+      sx={{
+        display: "flex",
+        gap: "5px",
+        alignItems: "center",
+        p: 1,
+        borderRadius: "10px",
+        mb: 2,
+        cursor: "pointer",
+        transition: "0.3s",
+        "&:hover": {
+          backgroundColor: (theme) => alpha(theme.palette.common.white, 0.1),
+        },
+      }}
+    >
+      <Avatar sx={{ width: 40, height: 40 }} src={conversation.image} />
+      <Box
+        sx={{
+          alignSelf: "stretch",
+          display: "flex",
+          flex: 1,
+          justifyContent: "space-between",
+        }}
+      >
+        <Box>
+          <Typography
+            sx={{
+              fontWeight: "800",
+            }}
+          >
+            {conversation.name}
+          </Typography>
+          <Typography
+            sx={{
+              color: (theme) =>
+                theme.palette.mode === "dark" ? "grey.400" : "grey.700",
+              fontSize: "16px",
+              maxWidth: "150px",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              flex: 1,
+            }}
+          >
+            {conversation.messages[conversation.messages.length - 1].text}
+          </Typography>
+        </Box>
+        <Typography
+          sx={{
+            fontSize: "14px",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {conversation.messages[0].time}
+        </Typography>
+      </Box>
+    </Box>
+  );
+};
 
-  time: string;
-}
+const MainChat = () => {
+  return (
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        px: { xs: 0, sm: 1 },
+      }}
+    >
+      <ChatHeader />
+      <ChatBody />
+      <TextField fullWidth variant="standard" label="Message" />
+    </Box>
+  );
+};
 
-interface ChatCard {
-  id: number;
-  name: string;
-  image: string; // real link for person image
-  messages: Message[];
-}
-
-const conversations: ChatCard[] = [
-  {
-    id: 1,
-    name: "Alice Smith",
-    image: "https://picsum.photos/id/1011/200/200",
-    messages: [
-      { id: 1, sender: 1, text: "Hi there!", time: "09:25" },
-      { id: 2, sender: 2, text: "Hello!", time: "09:25" },
-    ],
-  },
-  {
-    id: 2,
-    name: "Bob Johnson",
-    image: "https://picsum.photos/id/1012/200/200",
-    messages: [
-      { id: 1, sender: 1, text: "Good morning!", time: "Yesterday" },
-      { id: 2, sender: 2, text: "Morning!", time: "Yesterday" },
-    ],
-  },
-  {
-    id: 3,
-    name: "Charlie Brown",
-    image: "https://picsum.photos/id/1013/200/200",
-    messages: [
-      {
-        id: 1,
-        sender: 1,
-        text: "Are you coming to the party?",
-        time: "2024-07-09",
-      },
-      { id: 2, sender: 2, text: "Yes, I'll be there.", time: "2024-07-09" },
-    ],
-  },
-  {
-    id: 4,
-    name: "Daisy Ridley",
-    image: "https://picsum.photos/id/1014/200/200",
-    messages: [
-      { id: 1, sender: 1, text: "How are you?", time: "09:25" },
-      { id: 2, sender: 2, text: "I'm good, thanks!", time: "09:25" },
-    ],
-  },
-  {
-    id: 5,
-    name: "Eve Torres",
-    image: "https://picsum.photos/id/1015/200/200",
-    messages: [
-      { id: 1, sender: 1, text: "Let's meet up.", time: "Yesterday" },
-      { id: 2, sender: 2, text: "Sure, where?", time: "Yesterday" },
-    ],
-  },
-  {
-    id: 6,
-    name: "Frank Castle",
-    image: "https://picsum.photos/id/1016/200/200",
-    messages: [
-      { id: 1, sender: 1, text: "Did you get the report?", time: "2024-07-08" },
-      { id: 2, sender: 2, text: "Yes, I did.", time: "2024-07-08" },
-    ],
-  },
-  {
-    id: 7,
-    name: "Grace Hopper",
-    image: "https://picsum.photos/id/1011/200/200",
-    messages: [
-      { id: 1, sender: 1, text: "Happy Birthday!", time: "09:25" },
-      { id: 2, sender: 2, text: "Thank you!", time: "09:25" },
-    ],
-  },
-  {
-    id: 8,
-    name: "Hank Pym",
-    image: "https://picsum.photos/id/1018/200/200",
-    messages: [
-      {
-        id: 1,
-        sender: 1,
-        text: "Are we still on for tomorrow?",
-        time: "Yesterday",
-      },
-      {
-        id: 2,
-        sender: 2,
-        text: "Yes, looking forward to it.",
-        time: "Yesterday",
-      },
-    ],
-  },
-  {
-    id: 9,
-    name: "Ivy Green",
-    image: "https://picsum.photos/id/1019/200/200",
-    messages: [
-      {
-        id: 1,
-        sender: 1,
-        text: "Can you send me the files?",
-        time: "2024-07-07",
-      },
-      { id: 2, sender: 2, text: "Sure, sending now.", time: "2024-07-07" },
-    ],
-  },
-  {
-    id: 10,
-    name: "Jake Long",
-    image: "https://picsum.photos/id/1020/200/200",
-    messages: [
-      { id: 1, sender: 1, text: "What's the plan?", time: "09:25" },
-      { id: 2, sender: 2, text: "Let's discuss over lunch.", time: "09:25" },
-    ],
-  },
-];
-
-const Chat = ({ params: { userID } }: Props) => {
+const ChatBody = () => {
+  const { selctedConversation } = useSelector((state: RootState) => state.chat);
+  const containerMessages = useRef();
   return (
     <Box
       sx={{
         display: "flex",
-        height: "100%",
-        minHeight: "100vh",
+        height: "calc(100% - 60px - 48px)",
+        overflowY: "auto",
+        flexDirection: "column",
+        py: 2,
+        "&::-webkit-scrollbar": {
+          display: "none",
+        },
+        scrollbarWidth: "5px",
+      }}
+      ref={containerMessages}
+    >
+      {selctedConversation?.messages.map((msg) => (
+        <Box
+          key={msg.id}
+          sx={{
+            backgroundColor: msg.sender === 1 ? "primary.main" : "",
+            p: 1,
+            mb: 2,
+            maxWidth: "60%",
+            alignSelf: msg.sender === 1 ? "flex-end" : "flex-start",
+            borderRadius: "4px",
+            pb: "20px",
+            position: "relative",
+            boxShadow: (theme) =>
+              msg.sender !== 1
+                ? `inset 1px 1px 10px -4px ${alpha(
+                    theme.palette.primary.main,
+                    0.3
+                  )}`
+                : "",
+          }}
+        >
+          <Typography
+            sx={{
+              color: (theme) =>
+                msg.sender === 1 ? theme.palette.primary.contrastText : "",
+            }}
+          >
+            {msg.text}
+          </Typography>
+          <Box
+            sx={{
+              position: "absolute",
+              display: "flex",
+              alignItems: "center",
+              columnGap: "4px",
+              height: "20px",
+              bottom: "0",
+              right: "0",
+              px: 1,
+
+              color: (theme) =>
+                theme.palette.mode === "dark" ? "grey.300" : "grey.700",
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: "12px",
+              }}
+            >
+              8:15
+            </Typography>
+          </Box>
+        </Box>
+      ))}
+    </Box>
+  );
+};
+
+const ChatHeader = () => {
+  const { selctedConversation } = useSelector((state: RootState) => state.chat);
+  const dispatch = useDispatch();
+  return (
+    <Box
+      sx={{
+        height: "60px",
+        boxShadow: (theme) =>
+          `2px 4px 15px -6px ${alpha(theme.palette.primary.main, 0.4)}`,
+        position: "sticky",
+        top: "0",
+        borderRadius: "5px",
+        px: 2,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
       }}
     >
       <Box
         sx={{
-          width: "320px",
-          p: 2,
-          backgroundColor: (theme) => alpha(theme.palette.common.white, 0.2),
-          backdropFilter: "blur(10px)",
-          height: "calc(100vh - 30px)",
-          my: "auto",
-          ml: 1,
-          borderRadius: "10px",
           display: "flex",
-          flexDirection: "column",
-          overflowY: "auto",
-          "&::-webkit-scrollbar": {
-            display: "none",
-          },
-          scrollbarWidth: "none",
+          alignItems: "center",
         }}
       >
-        <Typography
-          sx={{
-            fontSize: "32px",
-            fontWeight: "800",
-            mb: 3,
-          }}
-        >
-          Chats
-        </Typography>
-        <FormControl>
-          <InputLabel>Search</InputLabel>
-          <OutlinedInput
-            label="Search"
-            type="search"
-            sx={{
-              borderRadius: "30px",
-              height: "50px",
-            }}
-          />
-        </FormControl>
-        <Divider
-          sx={{
-            my: 2,
-          }}
+        <Avatar
+          sx={{ width: 40, height: 40 }}
+          src={selctedConversation?.image}
         />
-        <Box>
-          {conversations.map((conversation) => (
-            <Box
-              key={conversation.id}
-              sx={{
-                display: "flex",
-                gap: "5px",
-                alignItems: "center",
-                p: 1,
-                backgroundColor: (theme) =>
-                  alpha(theme.palette.common.white, 0.05),
-                borderRadius: "10px",
-                mb: 2,
-                cursor: "pointer",
-                transition: "0.3s",
-                "&:hover": {
-                  backgroundColor: (theme) =>
-                    alpha(theme.palette.common.white, 0.09),
-                },
-              }}
-            >
-              <Avatar sx={{ width: 40, height: 40 }} src={conversation.image} />
-              <Box
-                sx={{
-                  alignSelf: "stretch",
-                  display: "flex",
-                  flex: 1,
-                  justifyContent: "space-between",
-                }}
-              >
-                <Box>
-                  <Typography
-                    sx={{
-                      fontWeight: "800",
-                    }}
-                  >
-                    {conversation.name}
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: "grey.500",
-                      fontSize: "16px",
-                      maxWidth: "150px",
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      flex: 1,
-                    }}
-                  >
-                    {conversation.messages[0].text}
-                  </Typography>
-                </Box>
-                <Typography
-                  sx={{
-                    fontSize: "14px",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {conversation.messages[0].time}
-                </Typography>
-              </Box>
-            </Box>
-          ))}
-        </Box>
+        <Typography ml={1}>{selctedConversation?.name}</Typography>
       </Box>
+      <IconButton
+        sx={{
+          display: { sm: "none" },
+        }}
+        onClick={() => {
+          dispatch(
+            SET_SELECTED_CONVERSATION({
+              conversation: null,
+              id: null,
+            })
+          );
+        }}
+      >
+        <ExitToAppOutlined />
+      </IconButton>
+    </Box>
+  );
+};
+
+const NoSelectedConversationYet = () => {
+  return (
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "column",
+      }}
+    >
+      <NoSelectedConversation />
+      <Typography
+        sx={{
+          "& .marked": {
+            color: "primary.main",
+          },
+        }}
+      >
+        Select a conversation or start a <span className="marked">new one</span>
+      </Typography>
+    </Box>
+  );
+};
+
+const WebChatLayout = () => {
+  const { selctedConversation, conversations } = useSelector(
+    (state: RootState) => state.chat
+  );
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        height: "100vh",
+      }}
+    >
+      <Conversations conversations={conversations} />
+
       <Box
         sx={{
-          width: "calc(100% - 320px)",
-          px: 1,
+          width: { xs: "100%", sm: "calc(100% - 320px)" },
+          height: "100vh",
           py: 2,
-          backgroundImage: (theme) =>
-            `linear-gradient(to right , ${theme.palette.background.default} , ${theme.palette.background.paper})`,
         }}
       >
-        <Box
-          sx={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection : 'column'
-          }}
-        >
-          <NoSelectedConversation />
-          <Typography sx={{
-            "& .marked" : {
-              color : 'primary.main'
-            }
-          }}>Select a conversation or start a <span className="marked">new one</span></Typography>
-        </Box>
+        {!selctedConversation ? <NoSelectedConversationYet /> : <MainChat />}
       </Box>
     </Box>
   );
+};
+
+const MobileChatLayout = () => {
+  const { selctedConversation, conversations } = useSelector(
+    (state: RootState) => state.chat
+  );
+  return (
+    <Box
+      sx={{
+        width: "100%",
+        height: "100vh",
+      }}
+    >
+      {selctedConversation ? (
+        <MainChat />
+      ) : (
+        <Conversations
+          conversations={conversations}
+        />
+      )}
+    </Box>
+  );
+};
+
+const Chat = ({ params: { userID } }: Props) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  return isMobile ? <MobileChatLayout /> : <WebChatLayout />;
 };
 
 export default Chat;

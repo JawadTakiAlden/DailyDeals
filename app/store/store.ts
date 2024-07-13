@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import customization from "./slices/customizationSlice";
+import chat from "./slices/chatSlice";
 
 const store = configureStore({
     reducer : {
-        customization : customization
+        customization : customization,
+        chat : chat
     }
 })
 
