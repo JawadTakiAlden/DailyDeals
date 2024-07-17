@@ -45,9 +45,27 @@ const NavLink = () => {
         linksComponent={(handleClose) => {
           return (
             <>
-              <MenuItem onClick={handleClose}>Categories</MenuItem>
-              <MenuItem onClick={handleClose}>Create Category</MenuItem>
-              <MenuItem onClick={handleClose}>Categories requests</MenuItem>
+              <MenuItem
+                component={Link}
+                href="/admin/categories/all"
+                onClick={handleClose}
+              >
+                Categories
+              </MenuItem>
+              <MenuItem
+                component={Link}
+                href="/admin/categories/create"
+                onClick={handleClose}
+              >
+                Create Category
+              </MenuItem>
+              <MenuItem
+                component={Link}
+                href="/admin/categories/add-category-requests"
+                onClick={handleClose}
+              >
+                Categories requests
+              </MenuItem>
             </>
           );
         }}
