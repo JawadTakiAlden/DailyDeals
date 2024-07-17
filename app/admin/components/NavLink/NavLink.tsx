@@ -54,7 +54,7 @@ const NavLink = () => {
               </MenuItem>
               <MenuItem
                 component={Link}
-                href="/admin/categories/create"
+                href="/admin/categories/form?task=create&redirectURL=/admin/categories/all"
                 onClick={handleClose}
               >
                 Create Category

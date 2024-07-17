@@ -11,10 +11,13 @@ import {
   OutlinedInput,
 } from "@mui/material";
 import { Formik } from "formik";
+import { useRouter } from "next/navigation";
 import React, { useMemo, useState } from "react";
 
-const CategoryForm = () => {
-  const [open, setOpen] = useState(false);
+
+
+const CategoryForm = ({redirectURL} : {redirectURL : string}) => {
+    const router = useRouter()
   const initialValues: {
     category: string;
     image: File | null;
@@ -32,6 +35,7 @@ const CategoryForm = () => {
 
   const handleFormSubmit = (values: typeof initialValues) => {
     console.log(values);
+    router.push(redirectURL)
   };
   return (
     <Box>

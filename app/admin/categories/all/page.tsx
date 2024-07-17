@@ -110,7 +110,7 @@ const AllCatgeories = () => {
           rowGap: "20px",
           columnGap: "10px",
           flexWrap: "wrap",
-          position : "relative"
+          position: "relative",
         }}
       >
         {categories.map((category) => (
@@ -163,7 +163,11 @@ const AllCatgeories = () => {
             >
               <Box>
                 <Tooltip title="Edit">
-                  <IconButton color="warning">
+                  <IconButton
+                    component={Link}
+                    href={`/admin/categories/form?task=edit&categoryID=${category.id}&redirectURL=/admin/categories/all`}
+                    color="warning"
+                  >
                     <Edit />
                   </IconButton>
                 </Tooltip>
@@ -181,7 +185,7 @@ const AllCatgeories = () => {
                 component={Link}
                 href={`/admin/categories/details/${category.id}`}
                 sx={{
-                    color : 'info.main'
+                  color: "info.main",
                 }}
               >
                 More...

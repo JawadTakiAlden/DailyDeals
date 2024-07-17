@@ -8,11 +8,11 @@ interface Props {
   searchParams : {
     task : 'create' | 'edit'
     categoryId? : number
-    redierctURL : string
+    redirectURL : string
   }
 }
 
-const CreateCategory = () => {
+const CreateCategory = ({searchParams : {redirectURL , task , categoryId}} : Props) => {
   
   return (
     <Box
@@ -32,7 +32,7 @@ const CreateCategory = () => {
         <Typography mb={2}>
           Create new category
         </Typography>
-        <CategoryForm />
+        <CategoryForm redirectURL={redirectURL} />
       </Box>
     </Box>
   )

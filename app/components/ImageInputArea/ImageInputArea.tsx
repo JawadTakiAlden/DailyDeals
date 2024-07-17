@@ -19,7 +19,7 @@ const ImageInputArea = ({ inputFileProps, value }: Props) => {
       sx={{
         p: 2,
         backgroundColor: (theme) => alpha(theme.palette.grey[500], 0.2),
-        height: "250px",
+        height: "300px",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -58,7 +58,6 @@ const ImageInputArea = ({ inputFileProps, value }: Props) => {
             </Typography>
             <Typography
               textAlign={"center"}
-              //   variant="caption"
               sx={{
                 mx: "auto",
                 fontSize: "14px",
@@ -70,7 +69,7 @@ const ImageInputArea = ({ inputFileProps, value }: Props) => {
             </Typography>
           </motion.div>
         ) : (
-          <motion.div key={'image'}>
+          <motion.div style={{}}>
             <Box
               sx={{
                 position: "relative",
@@ -78,6 +77,7 @@ const ImageInputArea = ({ inputFileProps, value }: Props) => {
                 width: "200px",
                 borderRadius: "8px",
                 overflow: "hidden",
+                mx: "auto",
               }}
             >
               <Image
@@ -90,6 +90,17 @@ const ImageInputArea = ({ inputFileProps, value }: Props) => {
                 }}
               />
             </Box>
+            <Typography
+              sx={{
+                mx: "auto",
+                fontSize: "14px",
+                fontWeight: "400",
+                textAlign : 'center',
+                mt : 1
+              }}
+            >
+              {value.name}
+            </Typography>
           </motion.div>
         )}
       </AnimatePresence>
