@@ -10,12 +10,9 @@ import ModeSwitch from "@/app/components/ModeSwicth/ModeSwitch";
 import PaletteController from "@/app/components/PaletteController/PaletteController";
 import UpdateProfile from "./UpdateProfile";
 import ResetPassword from "./ResetPassword";
-import { LoadingButton } from "@mui/lab";
 import LoginsToMyAccount from "@/app/components/LoginsToMyAccount/LoginsToMyAccount";
+import VisualHidinFileInput from "@/app/components/VisualHidinFileInput/VisualHidinFileInput";
 
-const VisualHidinFileInput = styled("input")(() => ({
-  display: "none",
-}));
 
 interface Props {
     src : string
