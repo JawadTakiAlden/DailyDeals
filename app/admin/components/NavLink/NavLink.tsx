@@ -61,7 +61,7 @@ const NavLink = () => {
               </MenuItem>
               <MenuItem
                 component={Link}
-                href="/admin/categories/add-category-requests"
+                href="/admin/categories/add-category-requests/all"
                 onClick={handleClose}
               >
                 Categories requests

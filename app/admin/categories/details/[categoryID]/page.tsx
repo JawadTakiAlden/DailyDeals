@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  IconButton,
   Switch,
 } from "@mui/material";
 import React from "react";
@@ -14,11 +15,14 @@ import { Table } from "@/app/components/Table/table";
 import { MaterialReactTable, MRT_ColumnDef } from "material-react-table";
 import Image from "next/image";
 import DeleteButton from "@/app/components/DeleteButton/DeleteButton";
+import Link from "next/link";
+import LinkIconButton from "@/app/components/LinkIconButton/LinkIconButton";
+import { EditOutlined } from "@mui/icons-material";
 
 interface SubCategroyInterface extends Category {
   number_of_products: number;
 
-  parent_name : string
+  parent_name: string;
 }
 
 const categories: SubCategroyInterface[] = [
@@ -29,7 +33,7 @@ const categories: SubCategroyInterface[] = [
     is_visible: true,
     priority: 1,
     number_of_products: 50,
-    parent_name : 'bla'
+    parent_name: "bla",
   },
   {
     id: 2,
@@ -38,7 +42,7 @@ const categories: SubCategroyInterface[] = [
     is_visible: true,
     priority: 2,
     number_of_products: 50,
-    parent_name : 'bla'
+    parent_name: "bla",
   },
   {
     id: 3,
@@ -47,7 +51,7 @@ const categories: SubCategroyInterface[] = [
     is_visible: true,
     priority: 3,
     number_of_products: 50,
-    parent_name : 'bla'
+    parent_name: "bla",
   },
   {
     id: 4,
@@ -56,7 +60,7 @@ const categories: SubCategroyInterface[] = [
     is_visible: true,
     priority: 4,
     number_of_products: 50,
-    parent_name : 'bla'
+    parent_name: "bla",
   },
   {
     id: 5,
@@ -65,7 +69,7 @@ const categories: SubCategroyInterface[] = [
     is_visible: true,
     priority: 5,
     number_of_products: 50,
-    parent_name : 'bla'
+    parent_name: "bla",
   },
   {
     id: 6,
@@ -74,7 +78,7 @@ const categories: SubCategroyInterface[] = [
     is_visible: true,
     priority: 6,
     number_of_products: 50,
-    parent_name : 'bla'
+    parent_name: "bla",
   },
   {
     id: 7,
@@ -83,7 +87,7 @@ const categories: SubCategroyInterface[] = [
     is_visible: true,
     priority: 7,
     number_of_products: 50,
-    parent_name : 'bla'
+    parent_name: "bla",
   },
   {
     id: 8,
@@ -92,7 +96,7 @@ const categories: SubCategroyInterface[] = [
     is_visible: true,
     priority: 8,
     number_of_products: 50,
-    parent_name : 'bla'
+    parent_name: "bla",
   },
   {
     id: 9,
@@ -101,7 +105,7 @@ const categories: SubCategroyInterface[] = [
     is_visible: true,
     priority: 9,
     number_of_products: 50,
-    parent_name : 'bla'
+    parent_name: "bla",
   },
   {
     id: 10,
@@ -110,11 +114,17 @@ const categories: SubCategroyInterface[] = [
     is_visible: true,
     priority: 10,
     number_of_products: 50,
-    parent_name : 'bla'
+    parent_name: "bla",
   },
 ];
 
-const CategoryDetails = () => {
+interface Props {
+  params: {
+    categoryID: number;
+  };
+}
+
+const CategoryDetails = ({ params: { categoryID } }: Props) => {
   const columns: MRT_ColumnDef<SubCategroyInterface>[] = [
     {
       accessorKey: "id",
@@ -169,9 +179,34 @@ const CategoryDetails = () => {
   const table = Table({
     data: categories,
     columns,
+    enableTopToolbar: true,
+    renderTopToolbar: ({ table }) => {
+      return (
+        <Box
+          sx={{
+            py: 1,
+            px: 0.5,
+          }}
+        >
+          <Button
+            component={Link}
+            href={`/admin/categories/form?task=create&parent_id=${categoryID}&redirectURL=/admin/categories/details/${categoryID}`}
+            variant="contained"
+          >
+            Create new one
+          </Button>
+        </Box>
+      );
+    },
     enableRowActions: true,
     renderRowActions: ({ row }) => (
-      <Box>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: " center",
+          gap: "5px",
+        }}
+      >
         <DeleteButton
           dialogComponent={({ handleClose }) => {
             return (
@@ -179,8 +214,8 @@ const CategoryDetails = () => {
                 <DialogTitle>Delete Sub Catgeory</DialogTitle>
                 <DialogContent>
                   <DialogContentText>
-                    are you sure you want to delete {row.original.name} from list of
-                    sub categories realted to {row.original.parent_name}
+                    are you sure you want to delete {row.original.name} from
+                    list of sub categories realted to {row.original.parent_name}
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -198,6 +233,12 @@ const CategoryDetails = () => {
               </>
             );
           }}
+        />
+        <LinkIconButton
+          linkProps={{
+            href: `/admin/categories/form?task=edit&categoryId=${row.original.id}&redirectURL=/admin/categories/details/${categoryID}`,
+          }}
+          icon={<EditOutlined />}
         />
       </Box>
     ),

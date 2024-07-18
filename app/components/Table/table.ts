@@ -9,7 +9,6 @@ import {
 export const Table = <T extends MRT_RowData>(props: MRT_TableOptions<T>) => {
   const theme = useTheme();
   const table = useMaterialReactTable({
-    ...props,
     muiTablePaperProps: {
       sx: {
         backgroundColor: "transparent",
@@ -39,6 +38,7 @@ export const Table = <T extends MRT_RowData>(props: MRT_TableOptions<T>) => {
       },
     },
     enableTopToolbar: false,
+    ...props,
   });
   return table;
 };

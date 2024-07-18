@@ -35,7 +35,7 @@ const ImageInputArea = ({ inputFileProps, value }: Props) => {
         {...inputFileProps}
       />
       {!value ? (
-        <>
+        <Box>
           <Typography
             sx={{
               "& .or-word": {
@@ -59,7 +59,7 @@ const ImageInputArea = ({ inputFileProps, value }: Props) => {
           >
             accepted formats: JPG, PNG, JPEG
           </Typography>
-        </>
+        </Box>
       ) : (
         <Box>
           <Box
