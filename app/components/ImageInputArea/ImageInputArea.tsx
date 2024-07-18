@@ -61,7 +61,7 @@ const ImageInputArea = ({ inputFileProps, value }: Props) => {
           </Typography>
         </>
       ) : (
-        <>
+        <Box>
           <Box
             sx={{
               position: "relative",
@@ -93,7 +93,7 @@ const ImageInputArea = ({ inputFileProps, value }: Props) => {
           >
             {value.name}
           </Typography>
-        </>
+        </Box>
       )}
     </Box>
   );

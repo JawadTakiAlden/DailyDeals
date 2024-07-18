@@ -1,15 +1,35 @@
+"use client";
 import Category from "@/app/interfaces/CatgeoryInterface";
-import { Box, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Switch,
+} from "@mui/material";
 import React from "react";
-import CategoryCard from "../../all/components/CategoryCard";
+import { Table } from "@/app/components/Table/table";
+import { MaterialReactTable, MRT_ColumnDef } from "material-react-table";
+import Image from "next/image";
+import DeleteButton from "@/app/components/DeleteButton/DeleteButton";
 
-const categories: Category[] = [
+interface SubCategroyInterface extends Category {
+  number_of_products: number;
+
+  parent_name : string
+}
+
+const categories: SubCategroyInterface[] = [
   {
     id: 1,
     name: "Electronics",
     image: "https://picsum.photos/200?random=1",
     is_visible: true,
     priority: 1,
+    number_of_products: 50,
+    parent_name : 'bla'
   },
   {
     id: 2,
@@ -17,6 +37,8 @@ const categories: Category[] = [
     image: "https://picsum.photos/200?random=2",
     is_visible: true,
     priority: 2,
+    number_of_products: 50,
+    parent_name : 'bla'
   },
   {
     id: 3,
@@ -24,6 +46,8 @@ const categories: Category[] = [
     image: "https://picsum.photos/200?random=3",
     is_visible: true,
     priority: 3,
+    number_of_products: 50,
+    parent_name : 'bla'
   },
   {
     id: 4,
@@ -31,6 +55,8 @@ const categories: Category[] = [
     image: "https://picsum.photos/200?random=4",
     is_visible: true,
     priority: 4,
+    number_of_products: 50,
+    parent_name : 'bla'
   },
   {
     id: 5,
@@ -38,6 +64,8 @@ const categories: Category[] = [
     image: "https://picsum.photos/200?random=5",
     is_visible: true,
     priority: 5,
+    number_of_products: 50,
+    parent_name : 'bla'
   },
   {
     id: 6,
@@ -45,6 +73,8 @@ const categories: Category[] = [
     image: "https://picsum.photos/200?random=6",
     is_visible: true,
     priority: 6,
+    number_of_products: 50,
+    parent_name : 'bla'
   },
   {
     id: 7,
@@ -52,6 +82,8 @@ const categories: Category[] = [
     image: "https://picsum.photos/200?random=7",
     is_visible: true,
     priority: 7,
+    number_of_products: 50,
+    parent_name : 'bla'
   },
   {
     id: 8,
@@ -59,6 +91,8 @@ const categories: Category[] = [
     image: "https://picsum.photos/200?random=8",
     is_visible: true,
     priority: 8,
+    number_of_products: 50,
+    parent_name : 'bla'
   },
   {
     id: 9,
@@ -66,6 +100,8 @@ const categories: Category[] = [
     image: "https://picsum.photos/200?random=9",
     is_visible: true,
     priority: 9,
+    number_of_products: 50,
+    parent_name : 'bla'
   },
   {
     id: 10,
@@ -73,27 +109,102 @@ const categories: Category[] = [
     image: "https://picsum.photos/200?random=10",
     is_visible: true,
     priority: 10,
+    number_of_products: 50,
+    parent_name : 'bla'
   },
 ];
 
 const CategoryDetails = () => {
+  const columns: MRT_ColumnDef<SubCategroyInterface>[] = [
+    {
+      accessorKey: "id",
+      header: "ID",
+      size: 50,
+    },
+    {
+      accessorKey: "name",
+      header: "Name",
+    },
+    {
+      accessorKey: "number_of_products",
+      header: "Product Count",
+      size: 50,
+    },
+    {
+      accessorKey: "priority",
+      header: "Priority",
+      size: 50,
+    },
+    {
+      accessorKey: "is_visible",
+      header: "Visibility",
+      Cell: ({ row }) => {
+        return (
+          <Box>
+            <Switch value={row.original.is_visible} />
+          </Box>
+        );
+      },
+    },
+    {
+      accessorKey: "image",
+      header: "Image",
+      Cell: ({ row }) => {
+        return (
+          <Box>
+            <Image
+              src={row.original.image}
+              alt={row.original.name}
+              width={60}
+              height={60}
+              style={{
+                borderRadius: "50%",
+              }}
+            />
+          </Box>
+        );
+      },
+    },
+  ];
+  const table = Table({
+    data: categories,
+    columns,
+    enableRowActions: true,
+    renderRowActions: ({ row }) => (
+      <Box>
+        <DeleteButton
+          dialogComponent={({ handleClose }) => {
+            return (
+              <>
+                <DialogTitle>Delete Sub Catgeory</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    are you sure you want to delete {row.original.name} from list of
+                    sub categories realted to {row.original.parent_name}
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    onClick={handleClose}
+                    color="error"
+                    variant="contained"
+                  >
+                    Confirm delete
+                  </Button>
+                  <Button onClick={handleClose} color="success" autoFocus>
+                    Cancel
+                  </Button>
+                </DialogActions>
+              </>
+            );
+          }}
+        />
+      </Box>
+    ),
+  });
   return (
     <Box>
-      <Typography mb={2} variant="h5">Sub categories</Typography>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          rowGap: "20px",
-          columnGap: "10px",
-          flexWrap: "wrap",
-          position: "relative",
-        }}
-      >
-        {categories.map((category) => (
-          <CategoryCard type="sub" key={category.id} category={category} />
-        ))}
-      </Box>
+      <MaterialReactTable table={table} />
     </Box>
   );
 };
