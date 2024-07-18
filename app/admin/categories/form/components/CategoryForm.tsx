@@ -12,12 +12,18 @@ import {
 } from "@mui/material";
 import { Formik } from "formik";
 import { useRouter } from "next/navigation";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
-
-
-const CategoryForm = ({redirectURL} : {redirectURL : string}) => {
-    const router = useRouter()
+const CategoryForm = ({
+  redirectURL,
+  categoryId,
+  task,
+}: {
+  redirectURL: string;
+  task: "create" | "edit";
+  categoryId: number;
+}) => {
+  const router = useRouter();
   const initialValues: {
     category: string;
     image: File | null;
@@ -35,8 +41,21 @@ const CategoryForm = ({redirectURL} : {redirectURL : string}) => {
 
   const handleFormSubmit = (values: typeof initialValues) => {
     console.log(values);
-    router.push(redirectURL)
+    router.push(redirectURL);
   };
+
+  useEffect(() => {
+    if (!redirectURL) {
+      router.push("?redirectURL=/admin/categories/all");
+    }
+    if (!task) {
+      router.push(redirectURL);
+    }
+    if (task === "edit" && !categoryId) {
+      router.push(redirectURL);
+    }
+  }, []);
+
   return (
     <Box>
       <Formik initialValues={initialValues} onSubmit={handleFormSubmit}>
@@ -119,7 +138,7 @@ const CategoryForm = ({redirectURL} : {redirectURL : string}) => {
               )}
             </FormControl>
             <Button color="primary" fullWidth type="submit" variant="contained">
-              Create
+              {task === "create" ? "Create" : "Update"}
             </Button>
           </form>
         )}

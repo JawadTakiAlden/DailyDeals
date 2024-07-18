@@ -1,31 +1,12 @@
 "use client";
-import { CreateOutlined, Delete, Edit } from "@mui/icons-material";
+import Category from "@/app/interfaces/CatgeoryInterface";
 import {
-  alpha,
   Box,
-  Button,
-  FormControl,
-  FormControlLabel,
-  IconButton,
-  Switch,
-  Tooltip,
-  Typography,
 } from "@mui/material";
-import Image from "next/image";
-import Link from "next/link";
 import React from "react";
+import CategoryCard from "./components/CategoryCard";
 
-interface Category {
-  id: number;
 
-  name: string;
-
-  image: string;
-
-  is_visible: boolean;
-
-  priority: number;
-}
 
 const categories: Category[] = [
   {
@@ -114,84 +95,7 @@ const AllCatgeories = () => {
         }}
       >
         {categories.map((category) => (
-          <Box
-            key={category.id}
-            sx={{
-              px: 2,
-              pt: 2,
-              borderRadius: "10px",
-              width: {
-                xs: "100%",
-                sm: "calc(50% - 10px)",
-                md: "calc(33.3333% - 10px)",
-                lg: "calc(25% - 10px)",
-              },
-            }}
-          >
-            <Box
-              sx={{
-                textAlign: "center",
-              }}
-            >
-              <Image
-                width={80}
-                height={80}
-                style={{
-                  borderRadius: "50%",
-                }}
-                src={category.image}
-                alt={category.name}
-              />
-            </Box>
-            <Typography
-              sx={{
-                my: 1,
-                textAlign: "center",
-              }}
-            >
-              {category.name}
-            </Typography>
-            <Box
-              sx={{
-                backgroundColor: (theme) => alpha(theme.palette.grey[500], 0.1),
-                py: 1,
-                px: 1,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Box>
-                <Tooltip title="Edit">
-                  <IconButton
-                    component={Link}
-                    href={`/admin/categories/form?task=edit&categoryID=${category.id}&redirectURL=/admin/categories/all`}
-                    color="warning"
-                  >
-                    <Edit />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Delete">
-                  <IconButton color="error">
-                    <Delete />
-                  </IconButton>
-                </Tooltip>
-
-                <Tooltip title="Visibility">
-                  <Switch value={category.is_visible} />
-                </Tooltip>
-              </Box>
-              <Typography
-                component={Link}
-                href={`/admin/categories/details/${category.id}`}
-                sx={{
-                  color: "info.main",
-                }}
-              >
-                More...
-              </Typography>
-            </Box>
-          </Box>
+            <CategoryCard key={category.id} category={category} />
         ))}
       </Box>
     </Box>
