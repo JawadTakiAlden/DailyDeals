@@ -3,7 +3,6 @@ import { alpha, Box, Typography } from "@mui/material";
 import React, { InputHTMLAttributes, memo } from "react";
 import VisualHidinFileInput from "../VisualHidinFileInput/VisualHidinFileInput";
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
 
 interface Props {
   inputFileProps: InputHTMLAttributes<HTMLInputElement>;
@@ -35,75 +34,67 @@ const ImageInputArea = ({ inputFileProps, value }: Props) => {
         type="file"
         {...inputFileProps}
       />
-      <AnimatePresence mode="sync">
-        {!value ? (
-          <motion.div
-            key="text"
-            initial={{ x: -100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -100, opacity: 0 }}
-            transition={{ duration: 0.4 }}
+      {!value ? (
+        <>
+          <Typography
+            sx={{
+              "& .or-word": {
+                color: "primary.light",
+                textDecoration: "underline",
+              },
+            }}
+            textAlign={"center"}
           >
-            <Typography
-              sx={{
-                "& .or-word": {
-                  color: "primary.light",
-                  textDecoration: "underline",
-                },
+            Please select an image <span className="or-word">or</span> <br />{" "}
+            drag and drop an image here to upload.
+          </Typography>
+          <Typography
+            textAlign={"center"}
+            sx={{
+              mx: "auto",
+              fontSize: "14px",
+              fontWeight: "400",
+            }}
+            color={"warning.main"}
+          >
+            accepted formats: JPG, PNG, JPEG
+          </Typography>
+        </>
+      ) : (
+        <>
+          <Box
+            sx={{
+              position: "relative",
+              height: "200px",
+              width: "200px",
+              borderRadius: "8px",
+              overflow: "hidden",
+              mx: "auto",
+            }}
+          >
+            <Image
+              src={URL.createObjectURL(value)}
+              alt={value.name}
+              fill
+              style={{
+                objectFit: "cover",
+                borderRadius: "10px",
               }}
-              textAlign={"center"}
-            >
-              Please select an image <span className="or-word">or</span> <br />{" "}
-              drag and drop an image here to upload.
-            </Typography>
-            <Typography
-              textAlign={"center"}
-              sx={{
-                mx: "auto",
-                fontSize: "14px",
-                fontWeight: "400",
-              }}
-              color={"warning.main"}
-            >
-              accepted formats: JPG, PNG, JPEG
-            </Typography>
-          </motion.div>
-        ) : (
-          <motion.div style={{}}>
-            <Box
-              sx={{
-                position: "relative",
-                height: "200px",
-                width: "200px",
-                borderRadius: "8px",
-                overflow: "hidden",
-                mx: "auto",
-              }}
-            >
-              <Image
-                src={URL.createObjectURL(value)}
-                alt={value.name}
-                fill
-                style={{
-                  objectFit: "cover",
-                  borderRadius: "10px",
-                }}
-              />
-            </Box>
-            <Typography
-              sx={{
-                mx: "auto",
-                fontSize: "14px",
-                fontWeight: "400",
-                textAlign : 'center',
-                mt : 1
-              }}
-            >
-              {value.name}
-            </Typography>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            />
+          </Box>
+          <Typography
+            sx={{
+              mx: "auto",
+              fontSize: "14px",
+              fontWeight: "400",
+              textAlign: "center",
+              mt: 1,
+            }}
+          >
+            {value.name}
+          </Typography>
+        </>
+      )}
     </Box>
   );
 };
