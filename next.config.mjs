@@ -8,6 +8,7 @@ const nextConfig = {
       },
     ],
   },
+
   env: {
     API_KEY: "AIzaSyAFkXfft5Bx86Oga_C47kTu4DCUZaaJHjY",
     AUTH_DOMAIN: "dailydeals-354ae.firebaseapp.com",

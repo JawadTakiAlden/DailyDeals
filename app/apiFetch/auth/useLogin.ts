@@ -12,9 +12,9 @@ const useLogin = () => {
     return request({
       url: "/auth/login",
       method: "POST",
-      headers : {
-"Content-Type" : "application/json"
-      },
+//       headers : {
+// "Content-Type" : "application/json"
+//       },
       data: {
         ...data,
         notification_token: fcmToken,
