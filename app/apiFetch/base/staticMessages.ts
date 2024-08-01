@@ -1,0 +1,1 @@
+export const noInternetMessage = "you are not connecting to the internet , check your connection and try agian"

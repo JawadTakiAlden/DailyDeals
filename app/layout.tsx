@@ -6,12 +6,13 @@ import { CssBaseline, GlobalStyles } from "@mui/material";
 import StoreProvider from "./store/StoreProvider";
 import ThemeProvider from "./theme/ThemeProvider";
 import { ReactNode } from "react";
+import ReactQueryProvider from "./apiFetch/base/ReactQueryProvider";
+import NotistickProvider from "./notistick/NotistickProvider";
 
 export const metadata: Metadata = {
   title: "DailyDeals",
   description: "Offers in your hands easily",
 };
-
 
 export default function Template({
   children,
@@ -25,18 +26,18 @@ export default function Template({
           <AppRouterCacheProvider options={{ key: "dailydealscss" }}>
             <ThemeProvider>
               <CssBaseline />
-              <GlobalStyles 
+              <GlobalStyles
                 styles={{
-                  overflowX : 'hidden',
+                  // overflow: "hidden",
                 }}
               />
-              {children}
+              <ReactQueryProvider>
+                <NotistickProvider> {children}</NotistickProvider>
+              </ReactQueryProvider>
             </ThemeProvider>
           </AppRouterCacheProvider>
         </StoreProvider>
-        {
-          
-        }
+        {}
       </body>
     </html>
   );

@@ -17,22 +17,22 @@ export default function AppTheme({
 }: CustiomizationState) {
   const theme = createTheme({
     palette: {
-      mode: mode,
-      background: {
-        default: mode === "dark" ? backgroundDark : background,
-      },
-      primary: {
-        main: primary,
-      },
-      secondary: {
-        main: secondary,
-      },
-      success: {
-        main: success,
-      },
-      error: {
-        main: error,
-      },
+      mode: 'dark',
+    //   background: {
+    //     default: mode === "dark" ? backgroundDark : background,
+    //   },
+    //   primary: {
+    //     main: primary,
+    //   },
+    //   secondary: {
+    //     main: secondary,
+    //   },
+    //   success: {
+    //     main: success,
+    //   },
+    //   error: {
+    //     main: error,
+    //   },
     },
     typography: {
       fontFamily: poppins.style.fontFamily,
@@ -61,18 +61,18 @@ export default function AppTheme({
       MuiDialog: {
         styleOverrides: {
           paper: {
-            backgroundColor: mode === 'dark' ? 'transparent' : background,
+            // backgroundColor: mode === 'dark' ? 'transparent' : background,
             backdropFilter: "blur(10px)",
           },
         },
       },
-      MuiDialogTitle : {
-        styleOverrides : {
-          root : {
-            color : primary
-          }
-        }
-      }
+      MuiDialogTitle: {
+        styleOverrides: {
+          root: {
+            // color : primary
+          },
+        },
+      },
     },
   });
 

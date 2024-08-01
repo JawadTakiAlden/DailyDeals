@@ -1,0 +1,3 @@
+interface DailyDealsResponse {
+    message : string
+}

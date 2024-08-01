@@ -1,10 +1,10 @@
 "use client"
-import { Button, Fade, Menu, alpha } from "@mui/material";
-import React, { ReactNode } from "react";
+import { Box, Button, Fade, Menu, alpha } from "@mui/material";
+import React, { ReactElement, ReactNode } from "react";
 
 type NavMenuProps = {
     title: string;
-    linksComponent: (handleClose: () => void) => ReactNode;
+    linksComponent: (handleClose: () => void) => ReactNode[];
   };
 
 const NavMenu = ({
@@ -59,7 +59,11 @@ const NavMenu = ({
             },
           }}
       >
-        {linksComponent(handleClose)}
+        {...linksComponent(handleClose).map((e , i) => (
+          <Box key={i}>
+            {e}
+          </Box>
+        ))}
       </Menu>
     </>
   );

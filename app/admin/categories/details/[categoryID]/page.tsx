@@ -7,17 +7,16 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  IconButton,
   Switch,
 } from "@mui/material";
 import React from "react";
 import { Table } from "@/app/components/Table/table";
 import { MaterialReactTable, MRT_ColumnDef } from "material-react-table";
 import Image from "next/image";
-import DeleteButton from "@/app/components/DeleteButton/DeleteButton";
 import Link from "next/link";
 import LinkIconButton from "@/app/components/LinkIconButton/LinkIconButton";
-import { EditOutlined } from "@mui/icons-material";
+import { Delete, EditOutlined } from "@mui/icons-material";
+import DialogButtonController from "@/app/components/DialogButtonController/DialogButtonController";
 
 interface SubCategroyInterface extends Category {
   number_of_products: number;
@@ -207,7 +206,11 @@ const CategoryDetails = ({ params: { categoryID } }: Props) => {
           gap: "5px",
         }}
       >
-        <DeleteButton
+        <DialogButtonController
+          icon={<Delete />}
+          iconButtonProps={{
+            color: "error",
+          }}
           dialogComponent={({ handleClose }) => {
             return (
               <>

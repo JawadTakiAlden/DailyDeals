@@ -1,17 +1,18 @@
-"use client"
-import * as React from "react";
+"use client";
+import React, { ReactElement, ReactNode } from "react";
 import Button, { ButtonProps } from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
+import Dialog, { DialogProps } from "@mui/material/Dialog";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import {
+  DialogTitle,
+  Icon,
   IconButton,
   IconButtonProps,
   Tooltip,
   TooltipProps,
 } from "@mui/material";
 import { DeleteOutlined } from "@mui/icons-material";
-import { title } from "process";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -21,23 +22,32 @@ const Transition = React.forwardRef(function Transition(
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-const DeleteButton = ({
-  dialogComponent = () => {
-    return <>edit dialogComponent props to update the dialog conetnt</>;
-  },
-  variant = "iconButton",
-  buttonProps,
-  tooltipProps,
-}: {
+
+interface Props {
   variant?: "button" | "iconButton";
-  dialogComponent?: ({
+  buttonProps?: ButtonProps;
+  iconButtonProps?: IconButtonProps;
+  tooltipProps?: TooltipProps;
+  title? : string,
+  icon? : ReactNode,
+  dialogProps? : DialogProps
+  dialogComponent: ({
     handleClose,
   }: {
     handleClose: () => void;
-  }) => React.ReactNode;
-  buttonProps?: ButtonProps | IconButtonProps;
-  tooltipProps?: TooltipProps;
-}) => {
+  }) => ReactElement;
+}
+
+const DialogButtonController = ({
+  dialogComponent,
+  variant = "iconButton",
+  buttonProps,
+  tooltipProps,
+  title,
+  icon,
+  iconButtonProps,
+  dialogProps
+}: Props) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -50,33 +60,32 @@ const DeleteButton = ({
   return (
     <React.Fragment>
       {variant === "button" ? (
-        <Tooltip title="Delete" {...tooltipProps}>
           <Button
-            {...(buttonProps as ButtonProps)}
+            {...buttonProps}
             color="error"
             variant="contained"
             onClick={handleClickOpen}
           >
-            Delete
+            {title}
           </Button>
-        </Tooltip>
       ) : (
-        <Tooltip title="Delete" {...tooltipProps}>
+        <Tooltip title={title} {...tooltipProps}>
           <IconButton
             onClick={handleClickOpen}
             color="error"
-            {...(buttonProps as ButtonProps)}
+            {...iconButtonProps}
           >
-            <DeleteOutlined />
+            {icon}
           </IconButton>
         </Tooltip>
       )}
 
       <Dialog
-        open={open}
         TransitionComponent={Transition}
-        keepMounted
+        {...dialogProps}
+        open={open}
         onClose={handleClose}
+        // keepMounted
       >
         {dialogComponent({ handleClose })}
       </Dialog>
@@ -84,4 +93,4 @@ const DeleteButton = ({
   );
 };
 
-export default DeleteButton;
+export default DialogButtonController;

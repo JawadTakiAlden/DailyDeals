@@ -6,14 +6,14 @@ import {
   Button,
   Divider,
   IconButton,
-  ListItemIcon,
+  ListItem,
   Menu,
   MenuItem,
   Tooltip,
   Typography,
   alpha,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 
 const notifications = [
   "Your order has been shipped and is on its way!",
@@ -62,16 +62,15 @@ const Notification = () => {
         onClick={handleClose}
         slotProps={{
           paper: {
-
             elevation: 0,
             sx: {
               overflow: "visible",
               mt: 1.5,
-              backgroundColor: alpha('#fff' , 0.2),
-              backdropFilter : 'blur(10px)',
+              backgroundColor: alpha("#fff", 0.2),
+              backdropFilter: "blur(10px)",
               borderRadius: "6px",
-              maxHeight : '600px',
-              overflowY : 'auto',
+              maxHeight: "600px",
+              overflowY: "auto",
               "& .MuiAvatar-root": {
                 width: 32,
                 height: 32,
@@ -84,11 +83,11 @@ const Notification = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <Button color="primary" fullWidth sx={{mb : 1}}>
-            mark all as read
+        <Button color="primary" fullWidth sx={{ mb: 1 }}>
+          mark all as read
         </Button>
         {notifications.map((notification, i) => (
-          <>
+          <Box key={i}>
             <Typography
               key={i}
               sx={{
@@ -100,7 +99,7 @@ const Notification = () => {
               {notification}
             </Typography>
             {i !== notification.length - 1 ? <Divider /> : undefined}
-          </>
+          </Box>
         ))}
       </Menu>
     </Box>

@@ -1,12 +1,17 @@
 "use client";
-import DeleteButton from "@/app/components/DeleteButton/DeleteButton";
+import DialogButtonController from "@/app/components/DialogButtonController/DialogButtonController";
 import Category from "@/app/interfaces/CatgeoryInterface";
+import { Delete } from "@mui/icons-material";
 import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import React from "react";
 
 const DeleteCategoryButton = ({category} : {category : Category}) => {
   return (
-    <DeleteButton
+    <DialogButtonController
+    icon={<Delete />}
+    iconButtonProps={{
+      color: 'error'
+    }}
       dialogComponent={({ handleClose }) => {
         return (
           <>

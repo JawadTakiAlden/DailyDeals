@@ -1,129 +1,124 @@
-"use client"
+"use client";
 import { Table } from "@/app/components/Table/table";
-import { Box } from "@mui/material";
+import AddCategoryRequest from "@/app/interfaces/AddCategoryRequest";
+import { Box, Typography } from "@mui/material";
 import { MaterialReactTable, MRT_ColumnDef } from "material-react-table";
 import React from "react";
+import RejectButton from "../components/RejectButton";
+import AcceptRequestButton from "../components/AcceptRequestButton";
 
-interface AddCategoryRequests {
-    id : number
-
-    category : string
-
-    admin_name? : string | null
-
-    parent_id? : number | null
-
-    parent_name? : string
-
-    user_id : number
-
-    // status : 'pending' | 'rejected' | 'accepted'
-}
-
-
-
-const categoryRequests: AddCategoryRequests[] = [
-    {
-        id: 1,
-        category: "Electronics",
-        admin_name: null,
-        parent_id: 0,
-        parent_name: "Root",
-        user_id: 101
+const categoryRequests: AddCategoryRequest[] = [
+  {
+    id: 1,
+    category: "Electronics",
+    status: "pending",
+    admin_name: null,
+    user: {
+      id: 105,
+      name: "jawad taki aldeen",
     },
-    {
-        id: 2,
-        category: "Books",
-        admin_name: null,
-        parent_id: 0,
-        parent_name: "Root",
-        user_id: 102
+    parent: null,
+  },
+  {
+    id: 2,
+    category: "Books",
+    admin_name: null,
+    status: "accepted",
+    user: {
+      id: 50,
+      name: "ali aldkak",
     },
-    {
-        id: 3,
-        category: "Computers",
-        admin_name: null,
-        parent_id: 1,
-        parent_name: "Electronics",
-        user_id: 103
+    parent: {
+      id: 50,
+      name: "Electronics",
     },
-    {
-        id: 4,
-        category: "Fiction",
-        admin_name: null,
-        parent_id: 2,
-        parent_name: "Books",
-        user_id: 104
+  },
+  {
+    id: 3,
+    category: "Laptops",
+    admin_name: null,
+    status: "rejected",
+    user: {
+      id: 110,
+      name: "noor asma",
     },
-    {
-        id: 5,
-        category: "Non-Fiction",
-        admin_name: null,
-        parent_id: 2,
-        parent_name: "Books",
-        user_id: 105
+    parent: {
+      id: 50,
+      name: "Electronics",
     },
-    {
-        id: 6,
-        category: "Laptops",
-        admin_name: null,
-        parent_id: 3,
-        parent_name: "Computers",
-        user_id: 106
-    },
-    {
-        id: 7,
-        category: "Desktops",
-        admin_name: null,
-        parent_id: 3,
-        parent_name: "Computers",
-        user_id: 107
-    },
-    {
-        id: 8,
-        category: "Fantasy",
-        admin_name: null,
-        parent_id: 4,
-        parent_name: "Fiction",
-        user_id: 108
-    },
-    {
-        id: 9,
-        category: "Biography",
-        admin_name: null,
-        parent_id: 5,
-        parent_name: "Non-Fiction",
-        user_id: 109
-    },
-    {
-        id: 10,
-        category: "Tablets",
-        admin_name: null,
-        parent_id: 3,
-        parent_name: "Computers",
-        user_id: 110
-    }
+  },
 ];
 
 const AddCategoryRequests = () => {
-    const columns : MRT_ColumnDef<AddCategoryRequests>[] = [
-        {
-            accessorKey : 'id',
-            header : 'ID',
-            size : 50
-        },
-        {
-            accessorKey : 'category',
-            header : 'Category Name',
-        },
-        {
-            accessorKey : 'parent_name',
-            header : 'Category Name',
-        },
-        // {
-        //     ac
-        // }
-    ]
+  console.log("rerender");
+  const columns: MRT_ColumnDef<AddCategoryRequest>[] = [
+    {
+      accessorKey: "id",
+      header: "ID",
+      size: 50,
+    },
+    {
+      accessorKey: "category",
+      header: "Category Name",
+    },
+    {
+      accessorKey: "user.name",
+      header: "Username",
+    },
+    {
+      accessorKey: "parent.name",
+      header: "Parent Categroy",
+      Cell: ({ row }) => {
+        return (
+          <Box>
+            {row.original.parent?.name || (
+              <Typography variant="caption" color={"error.light"}>
+                no parent
+              </Typography>
+            )}
+          </Box>
+        );
+      },
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      Cell: ({ row }) => (
+        <Typography
+          sx={{
+            width: "150px",
+            p: 1,
+            borderRadius: "6px",
+            backgroundColor:
+              row.original.status === "accepted"
+                ? "success.main"
+                : row.original.status === "pending"
+                ? "info.main"
+                : "error.main",
+            color: (theme) =>
+              theme.palette.getContrastText(theme.palette.info.main),
+            textAlign: "center",
+          }}
+        >
+          {row.original.status}
+        </Typography>
+      ),
+    },
+    {
+      accessorKey: "admin_name",
+      header: "Public Name",
+      Cell: ({ row }) => {
+        return (
+          row.original.admin_name || (
+            <Typography color={"error.light"} variant="caption">
+              not specifed yet
+            </Typography>
+          )
+        );
+      },
+    },
+  ];
+
   const table = Table({
     data: categoryRequests,
     columns,
@@ -135,7 +130,10 @@ const AddCategoryRequests = () => {
           alignItems: " center",
           gap: "5px",
         }}
-      ></Box>
+      >
+        <RejectButton row={row} />
+        <AcceptRequestButton row={row} />
+      </Box>
     ),
   });
   return (

@@ -1,10 +1,13 @@
 "use client";
+import useRegister from "@/app/apiFetch/auth/useRegister";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
   Button,
   FormControl,
   FormHelperText,
+  IconButton,
+  InputAdornment,
   InputLabel,
   OutlinedInput,
   Typography,
@@ -12,8 +15,11 @@ import {
 } from "@mui/material";
 import { Formik } from "formik";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import * as yup from "yup";
+import RegisterFormHeader from "../../login/components/RegisterFormHeader";
+import { UserInterface } from "@/app/interfaces/UserInterface";
+import { useState } from "react";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 type RegisterInaformation = {
   password: string;
@@ -21,6 +27,8 @@ type RegisterInaformation = {
   type: "merchant" | "user";
   first_name: string;
   last_name: string;
+  phone_number: string;
+  confirm_password: string;
 };
 
 const validationSchema = yup.object({
@@ -28,6 +36,11 @@ const validationSchema = yup.object({
   first_name: yup.string().max(26).required(),
   last_name: yup.string().max(26).required(),
   email: yup.string().email().required(),
+  phone_number: yup.string().length(10).required("phone number is required"),
+  confirm_password: yup
+    .string()
+    .oneOf([yup.ref("password")], "Passwords must match")
+    .required("Confirm new password is required"),
 });
 
 const initialValues: RegisterInaformation = {
@@ -36,6 +49,8 @@ const initialValues: RegisterInaformation = {
   type: "merchant",
   first_name: "",
   last_name: "",
+  phone_number: "",
+  confirm_password: "",
 };
 
 const TypeButton = styled(Button)(() => ({
@@ -45,10 +60,19 @@ const TypeButton = styled(Button)(() => ({
 const accountTypes: ["merchant", "user"] = ["merchant", "user"];
 
 const RegisterForm = () => {
-  const router = useRouter()
+  const register = useRegister();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowConfirmPassword = () =>
+    setShowConfirmPassword((show) => !show);
+
+  const handleMouseDownPassword = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+  };
   const onSubmit = (values: RegisterInaformation) => {
-    console.log(values);
-    router.push(`/auth/verify?email=jawad.taki.aldeen2002@gmail.com`)
+    register.mutate(values);
   };
   return (
     <Box
@@ -59,26 +83,7 @@ const RegisterForm = () => {
         p: 2,
       }}
     >
-      <Typography
-        sx={{
-          mb: 1,
-          color: "primary.dark",
-          fontSize: "16px",
-        }}
-      >
-        Discover Your Next Great Find!
-      </Typography>
-      <Typography
-        sx={{
-          mb: 2,
-          lineHeight: "1.6",
-          color: "grey",
-        }}
-      >
-        Join us and access exclusive deals, curated collections, and a seamless
-        shopping experience. Your journey to finding the best products starts
-        now!
-      </Typography>
+      <RegisterFormHeader />
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
@@ -103,7 +108,7 @@ const RegisterForm = () => {
             >
               {accountTypes.map((type, i) => (
                 <TypeButton
-                key={i}
+                  key={i}
                   sx={{
                     width: type === values.type ? "70%" : "50%",
                     p: 1,
@@ -164,29 +169,89 @@ const RegisterForm = () => {
               )}
             </FormControl>
             <FormControl fullWidth color="primary" sx={{ mb: 2 }}>
-              <InputLabel>Password</InputLabel>
+              <InputLabel>Phone</InputLabel>
               <OutlinedInput
-                type="password"
-                label="Password"
-                name="password"
+                type="text"
+                label="Phone"
+                name="phone_number"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={!!touched.password && !!errors.password}
-                value={values.password}
+                error={!!touched.phone_number && !!errors.phone_number}
+                value={values.phone_number}
               />
-              {!!errors.password && !!touched.password && (
+              {!!errors.phone_number && !!touched.phone_number && (
+                <FormHelperText error>{errors.phone_number}</FormHelperText>
+              )}
+            </FormControl>
+            <FormControl
+              error={!!touched.password && !!errors.password}
+              color="primary"
+              fullWidth
+              sx={{ mb: 1 }}
+            >
+              <InputLabel>Password</InputLabel>
+              <OutlinedInput
+                name="password"
+                value={values.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                label="Password"
+                type={showPassword ? "text" : "password"}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+              {!!touched.password && !!errors.password && (
                 <FormHelperText error>{errors.password}</FormHelperText>
               )}
             </FormControl>
+            <FormControl
+              error={!!touched.confirm_password && !!errors.confirm_password}
+              color="primary"
+              fullWidth
+              sx={{ mb: 1 }}
+            >
+              <InputLabel>Confirm Password</InputLabel>
+              <OutlinedInput
+                name="confirm_password"
+                value={values.confirm_password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                label="Confirm Password"
+                type={showConfirmPassword ? "text" : "password"}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={handleClickShowConfirmPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+              {!!touched.confirm_password && !!errors.confirm_password && (
+                <FormHelperText error>{errors.confirm_password}</FormHelperText>
+              )}
+            </FormControl>
             <LoadingButton
-              // loading
+              loading={register.isPending}
               type="submit"
               loadingPosition="start"
               fullWidth
               variant="contained"
               color="primary"
             >
-              Register
+              Create your account
             </LoadingButton>
           </form>
         )}

@@ -1,9 +1,7 @@
-"use client";
 import { VerifiedUser } from "@mui/icons-material";
-import { Box, Button, Typography } from "@mui/material";
-import React, { useState } from "react";
-import { MuiOtpInput } from "mui-one-time-password-input";
-import { LoadingButton } from "@mui/lab";
+import { Box, Typography } from "@mui/material";
+import React from "react";
+import OTPVerify from "./components/OTPVerify";
 
 interface Props {
   searchParams: {
@@ -12,11 +10,6 @@ interface Props {
 }
 
 const VerifyAccountPage = ({ searchParams: { email } }: Props) => {
-  const [otp, setOtp] = useState<string>("");
-
-  const handleChange = (newValue: string) => {
-    setOtp(newValue);
-  };
   return (
     <Box
       sx={{
@@ -54,31 +47,7 @@ const VerifyAccountPage = ({ searchParams: { email } }: Props) => {
           did not receive the email, please check your spam folder or request a
           new code.
         </Typography>
-        <MuiOtpInput
-          sx={{ mb: 2 }}
-          value={otp}
-          onChange={handleChange}
-          color={"secondary.main"}
-          length={4}
-          autoFocus
-        />
-        <LoadingButton
-          fullWidth
-          color="primary"
-          loadingPosition="start"
-          variant="contained"
-          sx={{
-            mb: 2,
-          }}
-        >
-          Verifiy Now
-        </LoadingButton>
-        <Typography variant="body2">
-          Did not receive a code? Check your spam or junk folder.
-        </Typography>
-        <Button sx={{ mt: 1 }} variant="outlined">
-          or request a new one
-        </Button>
+        <OTPVerify />
       </Box>
     </Box>
   );

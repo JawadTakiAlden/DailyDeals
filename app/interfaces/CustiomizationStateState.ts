@@ -6,4 +6,6 @@ export default interface CustiomizationState {
     activePaletteIndex : number
 
     mode : 'light' | 'dark'
+
+    protectEyes : boolean
 }

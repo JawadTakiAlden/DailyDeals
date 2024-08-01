@@ -6,9 +6,7 @@ import Logo from "./components/Logo/Logo";
 import Profile from "../components/Profile/Profile";
 import Notification from "../components/Notification/Notification";
 import ModeSwitch from "../components/ModeSwicth/ModeSwitch";
-import NavMenu from "../components/NavMenu/NavMenu";
 import NavLink from "./components/NavLink/NavLink";
-import { ChatOutlined } from "@mui/icons-material";
 
 const AdminLayout = ({
   children,
@@ -67,11 +65,11 @@ const AdminLayout = ({
             gap: "30px",
 
             height: "60px",
-            backgroundColor: "secondary.main",
+            backgroundColor: (theme) => alpha(theme.palette.grey[400] , 0.2),
             minWidth: "600px",
 
             "& *": {
-              color: (theme) => theme.palette.secondary.contrastText,
+              color: (theme) => theme.palette.getContrastText(alpha(theme.palette.grey[400] , 0.2)),
             },
           }}
         >

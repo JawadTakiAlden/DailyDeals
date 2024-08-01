@@ -1,6 +1,6 @@
 "use client";
 
-import DeleteButton from "@/app/components/DeleteButton/DeleteButton";
+import DeleteButton from "@/app/components/DeleteButton/DialogButtonController";
 import FaqInterface from "@/app/interfaces/FaqInterface";
 import { Add, DeleteOutlined, EditOutlined } from "@mui/icons-material";
 import {

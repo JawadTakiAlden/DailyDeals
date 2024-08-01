@@ -11,7 +11,8 @@ const mode : 'light' | 'dark' = 'dark'
 const initialState : CustiomizationState = {
     mode : mode,
     activePaletteIndex : activePaletteIndex,
-    palette : avaliblePalettes[activePaletteIndex]
+    palette : avaliblePalettes[activePaletteIndex],
+    protectEyes : true
 }
 
 const customization = createSlice({
@@ -29,6 +30,9 @@ const customization = createSlice({
             const newMode = state.mode === 'light' ? 'dark' : 'light'
             state.mode = newMode
             // setLocalStorageItem<'light'|'dark'>('dailyDealsMode' , newMode)
+        },
+        TOGGLE_EYES_PROTECTION : (state) => {
+            state.protectEyes != state.protectEyes
         }
     }
 })
