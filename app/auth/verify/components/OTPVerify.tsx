@@ -1,4 +1,4 @@
-"use clinet"
+"use client"
 import { LoadingButton } from "@mui/lab";
 import { Typography } from "@mui/material";
 import React from "react";
