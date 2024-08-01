@@ -54,7 +54,7 @@ const CategoryForm = ({
     if (task === "edit" && !categoryId) {
       router.push(redirectURL);
     }
-  }, []);
+  }, [redirectURL, task]);
 
   return (
     <Box>

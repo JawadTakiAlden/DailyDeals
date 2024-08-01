@@ -5,7 +5,7 @@ interface RequestOptions extends AxiosRequestConfig {}
 
 // Create an Axios instance with a base URL
 const client: AxiosInstance = axios.create({
-  baseURL: "https://daily-deals.houseofgeniuses.tech/api",
+  baseURL: "https://daily-deals.houseofgeniuses.tech/",
 });
 
 export const request = async (
