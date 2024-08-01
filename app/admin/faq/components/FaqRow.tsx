@@ -1,8 +1,8 @@
 "use client";
 
-import DeleteButton from "@/app/components/DeleteButton/DialogButtonController";
+import DialogButtonController from "@/app/components/DialogButtonController/DialogButtonController";
 import FaqInterface from "@/app/interfaces/FaqInterface";
-import { Add, DeleteOutlined, EditOutlined } from "@mui/icons-material";
+import { Add, Delete, DeleteOutlined, EditOutlined } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -75,7 +75,7 @@ const FaqRow = ({
               gap: "5px",
             }}
           >
-            <DeleteButton
+            <DialogButtonController
               dialogComponent={({ handleClose }) => {
                 return (
                   <>
@@ -101,6 +101,7 @@ const FaqRow = ({
                   </>
                 );
               }}
+              icon={<Delete />}
             />
             <Tooltip title={"Edit"}>
               <IconButton component={Link} href={`/admin/faq/faqFormDetail?redirectLink=/admin/faq/all&task=update&faqID=${faq.id}`} color="warning">

@@ -1,3 +1,4 @@
+"use clinet"
 import { LoadingButton } from "@mui/lab";
 import { Typography } from "@mui/material";
 import React from "react";
@@ -10,7 +11,7 @@ const OTPVerify = () => {
   const handleChange = (newValue: string) => {
     setOtp(newValue);
   };
-  
+
   return (
     <>
       <MuiOtpInput
